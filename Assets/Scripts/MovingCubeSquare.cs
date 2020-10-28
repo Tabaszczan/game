@@ -8,7 +8,7 @@ public class MovingCubeSquare : MonoBehaviour
     public float Speed = 9f;
     public float Step = 1f;
     public double Tolerance = 0.2;
-    private const float Degrees = 90;
+    private const float Degrees = 90; 
     readonly Vector3 _to = new Vector3(0, Degrees, 0);
     // Start is called before the first frame update
     void Start()
