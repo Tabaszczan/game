@@ -5,43 +5,31 @@ using UnityEngine;
 
 public class MovingCubeSquare : MonoBehaviour
 {
-    public float Speed = 2f;
-    public float Step = 2f;
-    private float _x;
-    private static readonly int[] WayList = new[] {0, 1, 2, 3};
-    private int _way = WayList[0];
-    Quaternion target = Quaternion.Euler(0, -90, 0);
-    private bool _rotate = false;
+    public float Speed = 9f;
+    public float Step = 1f;
+    public double Tolerance = 0.2;
+    private const float Degrees = 90;
+    readonly Vector3 _to = new Vector3(0, Degrees, 0);
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        
-
-        if ((transform.position.x <= 10 && _way == 0) || (transform.position.z <= 10 && _way == 1))
+        if ((transform.position.x <= 10 && Math.Abs(transform.position.z) < Tolerance && Math.Abs(transform.eulerAngles.y) < Tolerance) ||
+            (Math.Abs(transform.position.x - 10) < Tolerance && transform.position.z >= -10 && Math.Abs(transform.eulerAngles.y - 90) < Tolerance ) ||
+            (transform.position.x >= 0 && Math.Abs(transform.position.z - (-10)) < Tolerance && Math.Abs(transform.eulerAngles.y - 180) < Tolerance) ||
+            (Math.Abs(transform.position.x) < Tolerance && transform.position.z <= 0 && Math.Abs(transform.eulerAngles.y - 270) < Tolerance ))
         {
             transform.Translate(Speed * Time.deltaTime, 0, 0);
         }
         else
         {
-            if (!_rotate && transform.eulerAngles.y > 270 || Math.Abs(transform.eulerAngles.y) < 0.1)
-            {
-                
-                transform.rotation =
-                    Quaternion.Slerp(transform.rotation, target, Time.deltaTime * Step);
-            }
-            else
-            {
-                _rotate = true;
-                transform.Translate(0, 0, Speed * Time.deltaTime);
-
-            }
+            transform.eulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, transform.rotation.eulerAngles + _to, Time.deltaTime*Step);
         }
+
 
     }
 }
